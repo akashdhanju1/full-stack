@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Product Filter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f2f2f2;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .product-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .product {
+      padding: 12px;
+      background: #e8f0fe;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Product Filter</h2>
+
+    <!-- Dropdown Filter -->
+    <select id="categoryFilter">
+      <option value="all">All</option>
+      <option value="shoes">Shoes</option>
+      <option value="shirts">Shirts</option>
+      <option value="gadgets">Gadgets</option>
+    </select>
+
+    <!-- Product List -->
+    <div class="product-list" id="productList">
+      <div class="product" data-category="shoes">Nike Air Max</div>
+      <div class="product" data-category="shirts">Polo T-Shirt</div>
+      <div class="product" data-category="gadgets">Wireless Earbuds</div>
+      <div class="product" data-category="gadgets">Smartwatch</div>
+      <div class="product" data-category="shoes">Adidas Running Shoes</div>
+      <div class="product" data-category="shirts">Formal Shirt</div>
+    </div>
+  </div>
+
+  <script>
+    const filter = document.getElementById("categoryFilter");
+    const products = document.querySelectorAll(".product");
+
+    filter.addEventListener("change", () => {
+      const selected = filter.value;
+
+      products.forEach(product => {
+        const category = product.getAttribute("data-category");
+        if (selected === "all" || category === selected) {
+          product.classList.remove("hidden");
+        } else {
+          product.classList.add("hidden");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
