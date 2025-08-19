@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Banking UI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .balance {
+      background-color: #e0e0e0;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .balance h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .balance p {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #007bff;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px 0;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .deposit {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .deposit:hover {
+      background-color: #218838;
+    }
+
+    .withdraw {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .withdraw:hover {
+      background-color: #c82333;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="balance">
+      <h2>Your Balance</h2>
+      <p id="balanceDisplay">$1000.00</p>
+    </div>
+    <input type="number" id="amountInput" placeholder="Enter amount" />
+    <div class="buttons">
+      <button class="deposit" onclick="deposit()">Deposit</button>
+      <button class="withdraw" onclick="withdraw()">Withdraw</button>
+    </div>
+    <div class="error" id="errorMsg"></div>
+  </div>
+
+  <script>
+    let balance = 1000;
+
+    function updateBalance() {
+      document.getElementById("balanceDisplay").textContent = `$${balance.toFixed(2)}`;
+    }
+
+    function getAmount() {
+      const input = document.getElementById("amountInput");
+      const value = parseFloat(input.value);
+      document.getElementById("errorMsg").textContent = ""; // Clear any errors
+
+      if (isNaN(value) || value <= 0) {
+        document.getElementById("errorMsg").textContent = "Please enter a valid amount.";
+        return null;
+      }
+
+      return value;
+    }
+
+    function deposit() {
+      const amount = getAmount();
+      if (amount !== null) {
+        balance += amount;
+        updateBalance();
+        document.getElementById("amountInput").value = "";
+      }
+    }
+
+    function withdraw() {
+      const amount = getAmount();
+      if (amount !== null) {
+        if (amount > balance) {
+          document.getElementById("errorMsg").textContent = "Insufficient balance.";
+        } else {
+          balance -= amount;
+          updateBalance();
+          document.getElementById("amountInput").value = "";
+        }
+      }
+    }
+  </script>
+</body>
+</html>
