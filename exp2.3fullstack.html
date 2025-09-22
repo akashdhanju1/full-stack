@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SVG Drawing Canvas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background: #f9fafb;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    svg {
+      border: 1px solid #ccc;
+      background: white;
+      cursor: crosshair;
+    }
+    button {
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>SVG Drawing Canvas</h1>
+  <button id="clearBtn">Clear Canvas</button>
+  <svg id="drawingCanvas" width="800" height="400"></svg>
+
+  <script>
+    const svg = document.getElementById('drawingCanvas');
+    const clearBtn = document.getElementById('clearBtn');
+
+    let isDrawing = false;
+    let currentLine = null;
+
+    function getMousePosition(evt) {
+      const rect = svg.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+    }
+
+    svg.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+      const pos = getMousePosition(e);
+      currentLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      currentLine.setAttribute('x1', pos.x);
+      currentLine.setAttribute('y1', pos.y);
+      currentLine.setAttribute('x2', pos.x);
+      currentLine.setAttribute('y2', pos.y);
+      currentLine.setAttribute('stroke', '#007acc');
+      currentLine.setAttribute('stroke-width', '2');
+      currentLine.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(currentLine);
+    });
+
+    svg.addEventListener('mousemove', (e) => {
+      if (!isDrawing) return;
+      const pos = getMousePosition(e);
+      currentLine.setAttribute('x2', pos.x);
+      currentLine.setAttribute('y2', pos.y);
+    });
+
+    svg.addEventListener('mouseup', () => {
+      isDrawing = false;
+      currentLine = null;
+    });
+
+    svg.addEventListener('mouseleave', () => {
+      if (isDrawing) {
+        isDrawing = false;
+        currentLine = null;
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      while (svg.lastChild) {
+        svg.removeChild(svg.lastChild);
+      }
+    });
+  </script>
+</body>
+</html>
