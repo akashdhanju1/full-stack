@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product List with Category Filter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background: #f0f0f0;
+      color: #333;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    label {
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+    select {
+      padding: 0.3rem 0.5rem;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: white;
+      margin-bottom: 0.75rem;
+      padding: 1rem;
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .product-name {
+      font-weight: 600;
+    }
+    .product-category {
+      font-size: 0.9rem;
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>Product List</h1>
+
+  <div>
+    <label for="categoryFilter">Filter by category:</label>
+    <select id="categoryFilter">
+      <option value="all">All</option>
+      <option value="shoes">Shoes</option>
+      <option value="shirts">Shirts</option>
+      <option value="gadgets">Gadgets</option>
+    </select>
+  </div>
+
+  <ul id="productList">
+    <!-- Products will be rendered here -->
+  </ul>
+
+  <script>
+    // Product data array
+    const products = [
+      { id: 1, name: "Running Shoes", category: "shoes" },
+      { id: 2, name: "Casual Sneakers", category: "shoes" },
+      { id: 3, name: "Formal Shirt", category: "shirts" },
+      { id: 4, name: "Graphic T-Shirt", category: "shirts" },
+      { id: 5, name: "Smartphone", category: "gadgets" },
+      { id: 6, name: "Wireless Earbuds", category: "gadgets" },
+      { id: 7, name: "Hiking Boots", category: "shoes" },
+      { id: 8, name: "Denim Jacket", category: "shirts" },
+      { id: 9, name: "Smartwatch", category: "gadgets" }
+    ];
+
+    const productListEl = document.getElementById('productList');
+    const categoryFilterEl = document.getElementById('categoryFilter');
+
+    // Function to render products based on selected category
+    function renderProducts(filterCategory) {
+      // Clear current list
+      productListEl.innerHTML = '';
+
+      // Filter products
+      const filteredProducts = filterCategory === 'all'
+        ? products
+        : products.filter(p => p.category === filterCategory);
+
+      // If no products found, show a message
+      if (filteredProducts.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No products found in this category.';
+        li.style.fontStyle = 'italic';
+        productListEl.appendChild(li);
+        return;
+      }
+
+      // Create list items for each product
+      filteredProducts.forEach(product => {
+        const li = document.createElement('li');
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = product.name;
+        nameSpan.className = 'product-name';
+
+        const categorySpan = document.createElement('span');
+        categorySpan.textContent = product.category.charAt(0).toUpperCase() + product.category.slice(1);
+        categorySpan.className = 'product-category';
+
+        li.appendChild(nameSpan);
+        li.appendChild(categorySpan);
+
+        productListEl.appendChild(li);
+      });
+    }
+
+    // Initial render with all products
+    renderProducts('all');
+
+    // Event listener for dropdown change
+    categoryFilterEl.addEventListener('change', (e) => {
+      renderProducts(e.target.value);
+    });
+  </script>
+</body>
+</html>
